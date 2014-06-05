@@ -1,0 +1,32 @@
+{
+  "name": "octosmashed-fixtures-brunch",
+  "version": "0.1.0",
+  "description": "A brunch plugin to compile ember fixtures from markdown files",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sir-dunxalot/octosmashed-fixtures-brunch.git"
+  },
+  "keywords": [
+    "brunch",
+    "ember.js",
+    "ember",
+    "plugin",
+    "fixtures",
+    "compiler"
+  ],
+  "author": "Duncan Walker <walkerdu@bc.edu> (http://duncangwalker.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sir-dunxalot/octosmashed-fixtures-brunch/issues"
+  },
+  "homepage": "https://github.com/sir-dunxalot/octosmashed-fixtures-brunch",
+  "dependencies": {
+    "marked": "^0.3.2",
+    "yaml-front-matter": "^3.0.1",
+    "highlight.js": "^8.0.0"
+  }
+}
