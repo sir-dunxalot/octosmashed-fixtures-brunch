@@ -1,7 +1,16 @@
 var OctosmashedFixturesCompiler;
+
+/**
+Dependencies
+*/
+
 var jsYaml = require('yaml-front-matter');
 var marked = require('marked');
 var hljs = require('highlight.js');
+
+/**
+Compiler
+*/
 
 module.exports = OctosmashedFixturesCompiler = (function() {
   function OctosmashedFixturesCompiler() {};
@@ -12,6 +21,10 @@ module.exports = OctosmashedFixturesCompiler = (function() {
   var categoryIndex = 0;
   var postIndex = 0;
 
+  /**
+  Options
+  */
+
   OctosmashedFixturesCompiler.prototype.modulesPrefix = 'module.exports = ';
   OctosmashedFixturesCompiler.prototype.brunchPlugin = true;
   OctosmashedFixturesCompiler.prototype.type = 'template';
@@ -21,6 +34,10 @@ module.exports = OctosmashedFixturesCompiler = (function() {
   OctosmashedFixturesCompiler.prototype.compile = function(data, path, callback) {
     var err, error, result;
     var customRenderer = new marked.Renderer();
+
+    /**
+    Markdown parsing options
+    */
 
     marked.setOptions({
       // Block code
@@ -42,12 +59,28 @@ module.exports = OctosmashedFixturesCompiler = (function() {
     }
 
     try {
+
+      /**
+      Parse post as YAML front matter
+      */
+
       var compiled = jsYaml.loadFront(data);
 
-      compiled.__content = marked(compiled.__content, { renderer: customRenderer });
+      /**
+      Parse post content as markdown
+      */
 
-      this.prepForFixtures(compiled);
+      compiled.__content = marked(compiled.__content, {
+        renderer: customRenderer
+      });
 
+      /**
+      Add categories and posts to fixtures
+      */
+
+      this.prepFixtures(compiled);
+
+      compiled = JSON.stringify(compiled);
       compiled = this.modulesPrefix + compiled;
 
       return result = compiled;
@@ -59,7 +92,11 @@ module.exports = OctosmashedFixturesCompiler = (function() {
     }
   };
 
-  OctosmashedFixturesCompiler.prototype.prepForFixtures = function(post) {
+  /**
+  Add categories and posts to fixtures
+  */
+
+  OctosmashedFixturesCompiler.prototype.prepFixtures = function(post) {
     var categories = post.categories;
     var published, newPost, newCat;
 
@@ -73,7 +110,6 @@ module.exports = OctosmashedFixturesCompiler = (function() {
     });
 
     post['urlString'] = dasherize(post['title']);
-    console.log(post['urlString']);
     post['__content'] = replaceApostrophes(post['__content']);
     post['publishedObject'] = new Date(post['published']);
     post['id'] = postIndex;
@@ -84,6 +120,10 @@ module.exports = OctosmashedFixturesCompiler = (function() {
     return post;
   };
 
+  /**
+  Helper methods
+  */
+
   var replaceHandlebars = function(text) {
     return text.replace(/{{/g, '&#123;&#123;').replace(/}}/g, '&#125;&#125;');
   }
@@ -93,7 +133,7 @@ module.exports = OctosmashedFixturesCompiler = (function() {
   }
 
   var dasherize = function(text) {
-    return text.toLowerCase().replace(/\s+/g, '-').replace(/\W\-/g, '');
+    return text.toLowerCase().replace(/\s+/g, '-').replace(/[^-a-z \d]/ig, '');
   }
 
   return OctosmashedFixturesCompiler;
