@@ -9,17 +9,27 @@ var marked = require('marked');
 var hljs = require('highlight.js');
 
 /**
+Helper methods
+*/
+
+var replaceHandlebars = function(text) {
+  return text.replace(/{{/g, '&#123;&#123;').replace(/}}/g, '&#125;&#125;');
+}
+
+var replaceApostrophes = function(text) {
+  return text.replace(/&#39;/g,'\u0027');
+}
+
+var dasherize = function(text) {
+  return text.toLowerCase().replace(/\s+/g, '-').replace(/[^-a-z \d]/ig, '');
+}
+
+/**
 Compiler
 */
 
 module.exports = OctosmashedFixturesCompiler = (function() {
   function OctosmashedFixturesCompiler() {};
-
-  var allCategories = [];
-  var allPosts = [];
-
-  var categoryIndex = 0;
-  var postIndex = 0;
 
   /**
   Options
@@ -100,41 +110,11 @@ module.exports = OctosmashedFixturesCompiler = (function() {
     var categories = post.categories;
     var published, newPost, newCat;
 
-    categories.forEach(function(cat) {
-      // If category has not already been added to fixtures...
-      if (allCategories.indexOf(cat) == -1) {
-        newCat = { id: categoryIndex, name: cat };
-        allCategories.push(newCat);
-        categoryIndex++;
-      }
-    });
-
     post['urlString'] = dasherize(post['title']);
     post['__content'] = replaceApostrophes(post['__content']);
-    post['publishedObject'] = new Date(post['published']);
-    post['id'] = postIndex;
-    postIndex++;
-
-    allPosts.push(post);
 
     return post;
   };
-
-  /**
-  Helper methods
-  */
-
-  var replaceHandlebars = function(text) {
-    return text.replace(/{{/g, '&#123;&#123;').replace(/}}/g, '&#125;&#125;');
-  }
-
-  var replaceApostrophes = function(text) {
-    return text.replace(/&#39;/g,'\u0027');
-  }
-
-  var dasherize = function(text) {
-    return text.toLowerCase().replace(/\s+/g, '-').replace(/[^-a-z \d]/ig, '');
-  }
 
   return OctosmashedFixturesCompiler;
 })();
