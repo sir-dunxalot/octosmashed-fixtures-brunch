@@ -1,3 +1,8 @@
+/**
+This is a port of another NPM module found at:
+https://github.com/sir-dunxalot/yaml-front-matter-brunch
+*/
+
 var OctosmashedFixturesCompiler;
 
 /**
