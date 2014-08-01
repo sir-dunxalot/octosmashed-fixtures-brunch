@@ -1,6 +1,6 @@
 {
   "name": "octosmashed-fixtures-brunch",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A brunch plugin to compile ember fixtures from markdown files",
   "main": "index.js",
   "scripts": {

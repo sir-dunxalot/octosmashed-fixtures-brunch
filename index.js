@@ -55,22 +55,25 @@ module.exports = OctosmashedFixturesCompiler = (function() {
     */
 
     marked.setOptions({
+
       // Block code
       highlight: function (code, lang) {
-        code = replaceHandlebars(code);
 
         if (lang) {
-          return hljs.highlight(lang, code).value;
+          code = hljs.highlight(lang, code).value;
         } else {
-          return hljs.highlightAuto(code).value;
+          code = hljs.highlightAuto(code).value;
         }
+
+        return replaceHandlebars(code);
       },
     });
 
     // Inline code
     customRenderer.codespan = function(text, level) {
-      text = replaceHandlebars(text);
-      return '<code>' + text + '</code>';
+      code = replaceHandlebars(text);
+
+      return '<code>' + code + '</code>';
     }
 
     try {
